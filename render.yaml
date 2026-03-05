@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: nexa-flask
+    runtime: python
+    rootDir: flask-backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python3 app.py
+    envVars:
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      - key: WA_PHONE_NUMBER_ID
+        sync: false
+      - key: WA_ACCESS_TOKEN
+        sync: false
+      - key: WA_VERIFY_TOKEN
+        sync: false
+      - key: WA_ADVISOR_PHONE
+        sync: false
+      - key: FIREBASE_SERVICE_ACCOUNT
+        sync: false
+
+  - type: web
+    name: nexa-wa-bot
+    runtime: node
+    rootDir: wa-bot
+    buildCommand: npm install
+    startCommand: node index.js

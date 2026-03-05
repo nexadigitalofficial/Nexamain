@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+.venv/
+
+# Firebase — ASLA commit etme
+flask-backend/service-account.json
+
+# Node
+wa-bot/node_modules/
+wa-bot/.baileys/
+wa-bot/auth_info/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Render
+.render/
