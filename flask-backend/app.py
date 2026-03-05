@@ -63,14 +63,22 @@ def init_firebase_admin():
     if _fb_initialized:
         return
     try:
-        if os.path.exists(SERVICE_ACCOUNT):
+        import json
+        # Önce env variable'dan JSON string olarak dene (Render production)
+        sa_json = os.environ.get("FIREBASE_SERVICE_ACCOUNT_JSON", "")
+        if sa_json:
+            sa_dict = json.loads(sa_json)
+            cred = credentials.Certificate(sa_dict)
+        elif os.path.exists(SERVICE_ACCOUNT):
+            # Lokal geliştirme — dosyadan oku
             cred = credentials.Certificate(SERVICE_ACCOUNT)
-            firebase_admin.initialize_app(cred)
-            db_admin = admin_firestore.client()
-            _fb_initialized = True
-            print("✅ Firebase Admin bağlandı")
         else:
-            print(f"⚠️  {SERVICE_ACCOUNT} bulunamadı — Telegram hatırlatmaları devre dışı")
+            print(f"⚠️  Firebase credentials bulunamadı — FIREBASE_SERVICE_ACCOUNT_JSON env variable eksik")
+            return
+        firebase_admin.initialize_app(cred)
+        db_admin = admin_firestore.client()
+        _fb_initialized = True
+        print("✅ Firebase Admin bağlandı")
     except Exception as e:
         print(f"❌ Firebase Admin hatası: {e}")
 
